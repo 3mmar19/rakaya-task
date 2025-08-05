@@ -1,0 +1,15 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "ignorePaths": ["README.md"],
+  "words": [
+    "Kanban",
+    "Backlog",
+    "Zustand",
+    "Tailwind",
+    "dnd",
+    "rakaya",
+    "Trello",
+    "Jira"
+  ]
+}

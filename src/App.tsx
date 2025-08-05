@@ -1,26 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import Board from './components/Board/Board';
+import Layout from './components/Layout/Layout';
+import FloatingAddTaskButton from './components/UI/FloatingAddTaskButton';
+import FloatingSearchButton from './components/UI/FloatingSearchButton';
+import { ToastProvider } from './context/ToastContext';
 
-function App() {
+//---------------------------------------------------------------- App Component ------------------------------------------------------//
+const App: React.FC = () => {
+  const [isAddTaskModalOpen, setIsAddTaskModalOpen] = useState(false);
+  
+  // Function to open the add task modal
+  const handleAddTask = () => {
+    setIsAddTaskModalOpen(true);
+  };
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ToastProvider>
+      <Layout>
+        <Board 
+          isAddTaskModalOpen={isAddTaskModalOpen}
+          setIsAddTaskModalOpen={setIsAddTaskModalOpen}
+        />
+      </Layout>
+      
+      {/* Floating buttons for mobile */}
+      <div className="sm:hidden">
+        <FloatingAddTaskButton onAddTask={handleAddTask} />
+        <FloatingSearchButton />
+      </div>
+    </ToastProvider>
   );
-}
+};
 
 export default App;

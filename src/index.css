@@ -1,13 +1,41 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Roboto', sans-serif;
+    height: 100%;
+  }
+  
+  body {
+    min-height: 100%;
+  }
+  
+  /* Fix for dark mode overscroll */
+  html.dark {
+    background-color: #111827; /* Match your dark mode background */
+  }
+  
+  html.dark body {
+    background-color: #111827; /* Match your dark mode background */
+  }
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@layer utilities {
+  .font-roboto {
+    font-family: 'Roboto', sans-serif;
+  }
+}
+
+@layer components {
+  .glass-light {
+    @apply bg-[#ffffff5c] dark:bg-[#47474733];
+    backdrop-filter: blur(12px) saturate(180%);
+  }
+  
+  .glass {
+    @apply bg-white/40 dark:bg-gray-800/40;
+    backdrop-filter: blur(8px) saturate(150%);
+  }
 }
