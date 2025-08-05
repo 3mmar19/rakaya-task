@@ -68,9 +68,18 @@ A modern, responsive task management board application built with React, TypeScr
       <img src="image-8.png" alt="Delete Confirmation Dialog" width="100%"/>
       <p align="center"><em>Delete Confirmation Dialog</em></p>
     </td>
-    <td width="50%">
-      <img src="image-10.png" alt="search input and filters" width="100%"/>
-      <p align="center"><em>search input and filters</em></p>
+  </tr>
+</table>
+
+<div align="center">
+  <h3>Search & Filtering</h3>
+</div>
+
+<table>
+  <tr>
+    <td width="100%">
+      <img src="image-10.png" alt="Search Input and Filters" width="100%"/>
+      <p align="center"><em>Advanced Search and Filtering Interface</em></p>
     </td>
   </tr>
 </table>
@@ -160,7 +169,7 @@ src/
     </td>
     <td width="33%">
       <img src="image-11.png" alt="Mobile Floating Action Button" width="100%"/>
-      <p align="center"><em>Mobile Floating Search Button</em></p>
+      <p align="center"><em>Mobile Floating Action Button for better ux</em></p>
     </td>
     <td width="33%">
       <img src="image-12.png" alt="Mobile Search Interface" width="100%"/>
@@ -176,7 +185,7 @@ src/
   <h3>Ammar Bin Hussain</h3>
   <p>
     <a href="https://github.com/3mmar19"><img src="https://img.shields.io/badge/GitHub-3mmar19-2ea44f?logo=github" alt="GitHub"/></a>
-    <a href="https://www.linkedin.com/in/3mmar19"><img src="https://img.shields.io/badge/LinkedIn-3mmar19-blue?logo=linkedin" alt="LinkedIn"/></a>
+    <a href="https://linkedin.com/in/3mmar"><img src="https://img.shields.io/badge/LinkedIn-3mmar-blue?logo=linkedin" alt="LinkedIn"/></a>
     <a href="mailto:ammarhus.ahmed@gmail.com"><img src="https://img.shields.io/badge/Email-ammarhus.ahmed%40gmail.com-red?logo=gmail" alt="Email"/></a>
   </p>
 </div>
