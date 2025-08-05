@@ -164,16 +164,16 @@ src/
 <table>
   <tr>
     <td width="33%">
-      <img src="image-9.png" alt="Task Dialog with Button Components" width="100%"/>
-      <p align="center"><em>Dialog with Button Components</em></p>
+      <img src="image-13.png" alt="Task Dialog with Button Components" width="100%"/>
+      <p align="center"><em>for better ux we added as buttons not list</em></p>
     </td>
     <td width="33%">
       <img src="image-11.png" alt="Mobile Floating Action Button" width="100%"/>
-      <p align="center"><em>Mobile Floating Action Button for better ux</em></p>
+      <p align="center"><em>Mobile Floating Action Button for better ux and quick add btn</em></p>
     </td>
     <td width="33%">
-      <img src="image-12.png" alt="Mobile Search Interface" width="100%"/>
-      <p align="center"><em>Mobile Search Interface</em></p>
+      <img src="image-9.png" alt="Mobile Search Interface" width="100%"/>
+      <p align="center"><em>Mobile Search Input in bottom its more faster to reach than top in mobile</em></p>
     </td>
   </tr>
 </table>
