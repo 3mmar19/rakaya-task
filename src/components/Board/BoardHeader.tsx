@@ -199,7 +199,7 @@ const BoardHeader: React.FC<BoardHeaderProps> = ({ onAddTask, onAddMember }) => 
           {/*---------------------------------------------------- Deadline ----------------------------------------------------*/}
           <div className="flex flex-row sm:flex-row sm:items-center gap-2">
             <CalendarOff className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500 dark:text-gray-400 mt-1"/>
-            <span className="text-sm font-medium text-gray-500 dark:text-gray-400 w-24 sm:mb-0 mt-1">Deadline</span>
+            <span className="text-sm font-medium text-gray-500 dark:text-gray-400 sm:mb-0 mt-1">Deadline</span>
             <div className="flex flex-row">
               <div className="relative flex items-center bg-white/50 dark:bg-gray-700/50 rounded-md px-2 py-1 shadow-lg">
                 <input 
@@ -207,11 +207,11 @@ const BoardHeader: React.FC<BoardHeaderProps> = ({ onAddTask, onAddMember }) => 
                   value={deadline} 
                   min={new Date().toISOString().split('T')[0]}
                   onChange={(e) => setDeadline(e.target.value)}
-                  className="text-xs sm:text-sm text-gray-900 dark:text-white bg-transparent border-none outline-none p-0 cursor-pointer"
+                  className="text-xs sm:text-sm text-gray-900 dark:text-white bg-transparent border-none outline-none p-0 cursor-pointer [&::-webkit-calendar-picker-indicator]:dark:invert"
                 />
               </div>
               {deadline && (
-                <div className="flex items-center mt-1 ml-1">
+                <div className="flex items-center mt-1 ml-[1rem]">
                   <Clock className="w-3 h-3 mr-1 text-blue-500" />
                   <span className={`text-xs ${getDaysLeftColor(differenceInDays(parseISO(deadline), new Date()))}`}>
                     {getDaysLeftText(differenceInDays(parseISO(deadline), new Date()))}
