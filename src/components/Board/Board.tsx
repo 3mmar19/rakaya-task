@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import TaskForm from '../TaskCard/TaskForm';
+import TaskForm from '../Tasks/TaskForm';
 import MemberForm from '../UI/MemberForm';
 import Modal from '../UI/Modal';
 import { AlertTriangle } from 'lucide-react';
@@ -20,7 +20,7 @@ import useFilterStore from '../../store/filterStore';
 import { COLUMNS, TaskStatus, Task } from '../../types/task';
 import { filterAndSortTasks } from '../../utils/taskUtils';
 import Column from '../Columns/Column';
-import TaskCard from '../TaskCard/TaskCard';
+import TaskCard from '../Tasks/TaskCard';
 import BoardHeader from './BoardHeader';
 
 
@@ -150,7 +150,7 @@ const Board: React.FC<BoardProps> = ({ isAddTaskModalOpen, setIsAddTaskModalOpen
   const handleDragStart = (event: DragStartEvent) => {
     if (event.active.data.current?.type === 'task') {
       setActiveTask(event.active.data.current.task);
-      // Provide haptic feedback when drag starts on mobile
+      // Provide haptic on mobile
       vibrate(50);
     }
   };
@@ -169,7 +169,7 @@ const Board: React.FC<BoardProps> = ({ isAddTaskModalOpen, setIsAddTaskModalOpen
       const newStatus = over.id as TaskStatus;
       if (task.status !== newStatus) {
         moveTask(task.id, newStatus);
-        // Provide haptic feedback when task is dropped in a new column
+        // Provide haptic on mobile
         vibrate(100);
       }
     }

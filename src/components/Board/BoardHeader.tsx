@@ -1,9 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react';
-import Datepicker from 'react-tailwindcss-datepicker';
+import React, { useState, useEffect, useRef } from 'react';
 import useMemberStore from '../../store/memberStore';
 import useTagStore from '../../store/tagStore';
-import Portal from '../UI/Portal';
-import { Calendar, LayoutGrid, Plus, Tag, X } from 'lucide-react';
+import useTaskStore from '../../store/taskStore';
+import {LayoutGrid, Plus, Tag, X, Clock, CalendarOff } from 'lucide-react';
+import { differenceInDays, parseISO } from 'date-fns'; //using date fns library for calc deadline
 
 //---------------------------------------------------------------- BoardHeader Component ------------------------------------------------------//
 interface BoardHeaderProps {
@@ -12,12 +12,12 @@ interface BoardHeaderProps {
 }
 const BoardHeader: React.FC<BoardHeaderProps> = ({ onAddTask, onAddMember }) => {
   const [activeView, setActiveView] = useState('board');
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const datePickerRef = useRef<HTMLDivElement>(null);
-  const deadlineTriggerRef = useRef<HTMLDivElement>(null);
-  const [datePickerStyle, setDatePickerStyle] = useState<React.CSSProperties>({});
   
-  // Tag management state from store
+  // for members and tasks from stores 
+  const { tasks } = useTaskStore();
+  const members = useMemberStore((state) => state.members);
+
+  // for tags management state from store
   const { tags, addTag: addTagToStore, removeTag: removeTagFromStore } = useTagStore();
   const [newTag, setNewTag] = useState<string>('');
   const [isAddingTag, setIsAddingTag] = useState<boolean>(false);
@@ -25,7 +25,7 @@ const BoardHeader: React.FC<BoardHeaderProps> = ({ onAddTask, onAddMember }) => 
   const tagInputRef = useRef<HTMLInputElement>(null);
   const MAX_TAG_LENGTH = 20;
 
-  // Tag helper functions
+  // for Tag helper functions
   const addTag = () => {
     const trimmedTag = newTag.trim();
     if (trimmedTag !== '') {
@@ -64,7 +64,7 @@ const BoardHeader: React.FC<BoardHeaderProps> = ({ onAddTask, onAddMember }) => 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isAddingTag, newTag]);
+  }, [isAddingTag, newTag, addTag]);
 
   // Get tag color based on tag content
   const getTagColorClasses = (tag: string) => {
@@ -107,119 +107,76 @@ const BoardHeader: React.FC<BoardHeaderProps> = ({ onAddTask, onAddMember }) => 
     
     return colorOptions[colorIndex];
   };
+  
+  // Helper function to get color for days left text
+  const getDaysLeftColor = (daysLeft: number): string => {
+    if (daysLeft <= 2) return 'text-orange-500 dark:text-orange-400'; // Urgent
+    if (daysLeft <= 7) return 'text-yellow-600 dark:text-yellow-400'; // Soon
+    return 'text-green-600 dark:text-green-400'; // Plenty of time
+  };
+  
+  // Helper function to get text for days left
+  const getDaysLeftText = (daysLeft: number): string => {
+    if (daysLeft < 0) return `${Math.abs(daysLeft)} ${Math.abs(daysLeft) === 1 ? 'day' : 'days'} overdue`;
+    if (daysLeft === 0) return 'Due today';
+    if (daysLeft === 1) return 'Due tomorrow';
+    return `${daysLeft} days left`;
+  };
 
   useEffect(() => {
-    //---------------------------------------------------------------- Close datepicker when clicking outside ------------------------------------------------------//
-    function handleClickOutside(event: MouseEvent) {
-      if (datePickerRef.current && !datePickerRef.current.contains(event.target as Node)) {
-        setShowDatePicker(false);
-      }
-    }
+    // No need for click outside handler with native date input
+  return () => {};
+}, []);
 
-    if (showDatePicker) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [showDatePicker]);
-
-  useEffect(() => {
-    //---------------------------------------------------------------- Calculate position for the datepicker portal ------------------------------------------------------//
-    if (showDatePicker && deadlineTriggerRef.current) {
-      const rect = deadlineTriggerRef.current.getBoundingClientRect();
-      setDatePickerStyle({
-        position: 'absolute',
-        top: `${rect.bottom + window.scrollY + 5}px`,
-        left: `${rect.left + window.scrollX}px`,
-        zIndex: 99999,
-      });
-    }
-  }, [showDatePicker]);
-
+  // Simple deadline state using ISO string format for HTML date input
   const [deadline, setDeadline] = useState(() => {
     const savedDeadline = localStorage.getItem('boardDeadline');
     if (savedDeadline) {
-      const parsed = JSON.parse(savedDeadline);
-      //---------------------------------------------------------------- Ensure dates are valid Date objects after parsing ------------------------------------------------------//
-      return {
-        startDate: parsed.startDate ? new Date(parsed.startDate) : null,
-        endDate: parsed.endDate ? new Date(parsed.endDate) : null,
-      };
+      return savedDeadline;
     }
-    //---------------------------------------------------------------- Default value if nothing is saved ------------------------------------------------------//
-    return { 
-      startDate: new Date(), 
-      endDate: new Date() 
-    };
+    return new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
   });
-  const members = useMemberStore((state) => state.members);
 
   useEffect(() => {
     //---------------------------------------------------------------- Save deadline to localStorage on change ------------------------------------------------------//
-    localStorage.setItem('boardDeadline', JSON.stringify(deadline));
+    localStorage.setItem('boardDeadline', deadline);
   }, [deadline]);
-
-  useEffect(() => {
-    //---------------------------------------------------------------- When the datepicker is shown, click its input to open the calendar ------------------------------------------------------//
-    if (showDatePicker) {
-      setTimeout(() => {
-        const input = document.querySelector('.datepicker-input-class');
-        if (input instanceof HTMLElement) {
-          input.focus();
-          input.click();
-        }
-      }, 100); // Timeout to ensure the element is in the DOM
-    }
-  }, [showDatePicker]);
-
-
-  // Tag persistence is now handled by the Zustand store with persist middleware
 
   return (
     <>
       <div className="relative bg-white/70 dark:bg-gray-900 shadow-sm">
-      {showDatePicker && (
-        <Portal>
-          <div ref={datePickerRef} style={datePickerStyle}>
-            <Datepicker
-              value={deadline}
-              onChange={(value) => {
-                if (value) {
-                  setDeadline(value);
-                }
-                //---------------------------------------------------------------- The closing is handled by the useEffect hook ------------------------------------------------------//
-              }}
-              useRange={false}
-              asSingle={true}
-              displayFormat="DD MMM YYYY"
-              inputClassName="datepicker-input-class rdt_Input text-xs sm:text-sm bg-transparent border-0 text-gray-900 dark:text-white focus:ring-0 outline-none"
-              containerClassName="w-72 relative"
-              toggleClassName="hidden"
-              popoverDirection="down"
-              readOnly={true}
-              primaryColor="blue"
-            />
-          </div>
-        </Portal>
-      )}
       {/*-------------------------------------------------- Project Info Section --------------------------------------------------*/}
-      <div className="p-4 pb-6">
+      <div className="p-[0.3rem]">
         {/* Project Path */}
-        <div className="flex items-center text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-3 overflow-x-auto scrollbar-hide whitespace-nowrap backdrop-blur-sm rounded-lg py-1.5 px-2.5 w-fit">
+        <div className="flex items-center text-xs sm:text-sm text-gray-500 dark:text-gray-400  overflow-x-auto scrollbar-hide whitespace-nowrap backdrop-blur-sm rounded-lg py-1.5 px-2.5 w-fit">
           <span>Projects</span>
           <span className="mx-1">/</span>
-          <span>Rakaya Task</span>
+          <span>Today Task</span>
         </div>
         
         {/*---------------------------------------------------- Project Title ----------------------------------------------------*/}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 space-y-2 sm:space-y-0 backdrop-blur-sm rounded-lg p-3">
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white">Rakaya Task</h1>
+        <div className="backdrop-blur-sm rounded-lg p-3">
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white mb-2 sm:mb-3">Rakaya Task</h1>
+          
+          {/* Project Stats for better overview */}
+          <div className="flex items-center gap-3">
+            <div className="flex flex-col items-center bg-white/50 dark:bg-gray-800/50 rounded-lg px-3 py-1.5 shadow-md">
+              <span className="text-xs text-gray-500 dark:text-gray-400">Members</span>
+              <span className="text-lg font-bold text-blue-600 dark:text-blue-400">{members.length}</span>
+            </div>
+            <div className="flex flex-col items-center bg-white/50 dark:bg-gray-800/50 rounded-lg px-3 py-1.5 shadow-md">
+              <span className="text-xs text-gray-500 dark:text-gray-400">Tasks</span>
+              <span className="text-lg font-bold text-green-600 dark:text-green-400">{tasks.length}</span>
+            </div>
+            <div className="flex flex-col items-center bg-white/50 dark:bg-gray-800/50 rounded-lg px-3 py-1.5 shadow-md">
+              <span className="text-xs text-gray-500 dark:text-gray-400">Tags</span>
+              <span className="text-lg font-bold text-purple-600 dark:text-purple-400">{tags.length}</span>
+            </div>
+          </div>
         </div>
         
         {/*---------------------------------------------------- Project Details ----------------------------------------------------*/}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6 backdrop-blur-sm rounded-lg p-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 backdrop-blur-sm rounded-lg p-3">
           {/* Assigned To */}
           <div className="flex flex-col sm:flex-row sm:items-center">
             <span className="text-sm font-medium text-gray-500 dark:text-gray-400 w-24 mb-2 sm:mb-0">Assigned to</span>
@@ -240,20 +197,27 @@ const BoardHeader: React.FC<BoardHeaderProps> = ({ onAddTask, onAddMember }) => 
           </div>
           
           {/*---------------------------------------------------- Deadline ----------------------------------------------------*/}
-          <div className="flex flex-col sm:flex-row sm:items-center">
-            <span className="text-sm font-medium text-gray-500 dark:text-gray-400 w-24 mb-2 sm:mb-0">Deadline</span>
-            <div 
-              ref={deadlineTriggerRef}
-              className="relative flex items-center bg-white/50 dark:bg-gray-700/50 rounded-md px-2 py-1 shadow-lg cursor-pointer"
-              onClick={() => setShowDatePicker(!showDatePicker)}
-            >
-              <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1.5 sm:mr-2 text-gray-500 dark:text-gray-400" />
-              {!showDatePicker && (
-                <span className="text-xs sm:text-sm text-gray-900 dark:text-white">
-                  {deadline.startDate ? new Date(deadline.startDate).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }) : 'Select Date'}
-                </span>
+          <div className="flex flex-row sm:flex-row sm:items-center gap-2">
+            <CalendarOff className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500 dark:text-gray-400 mt-1"/>
+            <span className="text-sm font-medium text-gray-500 dark:text-gray-400 w-24 sm:mb-0 mt-1">Deadline</span>
+            <div className="flex flex-row">
+              <div className="relative flex items-center bg-white/50 dark:bg-gray-700/50 rounded-md px-2 py-1 shadow-lg">
+                <input 
+                  type="date" 
+                  value={deadline} 
+                  min={new Date().toISOString().split('T')[0]}
+                  onChange={(e) => setDeadline(e.target.value)}
+                  className="text-xs sm:text-sm text-gray-900 dark:text-white bg-transparent border-none outline-none p-0 cursor-pointer"
+                />
+              </div>
+              {deadline && (
+                <div className="flex items-center mt-1 ml-1">
+                  <Clock className="w-3 h-3 mr-1 text-blue-500" />
+                  <span className={`text-xs ${getDaysLeftColor(differenceInDays(parseISO(deadline), new Date()))}`}>
+                    {getDaysLeftText(differenceInDays(parseISO(deadline), new Date()))}
+                  </span>
+                </div>
               )}
-              
             </div>
           </div>
           

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import NotificationBell from '../UI/NotificationBell';
-import HeaderSearch from '../UI/HeaderSearch';
+import HeaderSearch from '../UI/SearchBar';
 import ThemeToggle from '../UI/ThemeToggle';
 import { X, Menu } from 'lucide-react';
 
@@ -15,7 +15,7 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, isSidebarOpen }) => {
   const [isMobileMenuOpen] = useState(false);
 
   return (
-    <header className="bg-white dark:bg-gray-900 shadow-sm p-2 sm:p-4 flex items-center justify-between border-b border-gray-200 dark:border-gray-700 relative z-50">
+    <header className="bg-white dark:bg-gray-900 shadow-sm p-2 sm:p-4 flex items-center justify-between border-b border-gray-200 dark:border-gray-700 relative z-40">
       {/* Left side - Mobile menu button */}
       <div className="w-10 sm:hidden">
         {/* Mobile menu button*/}
@@ -37,26 +37,6 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, isSidebarOpen }) => {
               <div className="flex items-center justify-between py-2">
                 <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Theme</span>
                 <ThemeToggle />
-              </div>
-              <div className="py-2">
-                <a
-                  href="#"
-                  className="block px-2 py-2 text-base font-medium text-gray-900 dark:text-white rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
-                >
-                  Board
-                </a>
-                <a
-                  href="#"
-                  className="block px-2 py-2 text-base font-medium text-gray-500 dark:text-gray-400 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
-                >
-                  Timeline
-                </a>
-                <a
-                  href="#"
-                  className="block px-2 py-2 text-base font-medium text-gray-500 dark:text-gray-400 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
-                >
-                  Calendar
-                </a>
               </div>
             </div>
           </div>

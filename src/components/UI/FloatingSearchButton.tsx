@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import HeaderSearch from './HeaderSearch';
+import HeaderSearch from './SearchBar';
 import useFilterStore from '../../store/filterStore';
 import useMemberStore from '../../store/memberStore';
 import { Search } from 'lucide-react';

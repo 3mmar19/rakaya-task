@@ -43,6 +43,7 @@ A modern, responsive task management board application built with React, TypeScr
 - **Glass Effect UI**: Modern, translucent interface elements with backdrop blur, inspired by iOS 26 liquid glass style
 - **Animations**: Subtle animations for improved user experience
 - **Persistent State**: Task and filter states are saved in local storage
+- **Keyboard Shortcuts**: Space key to add new tasks, Escape to close modals
 
 <div align="center">
   <h3>UI Components & Interactions</h3>
@@ -127,11 +128,11 @@ A modern, responsive task management board application built with React, TypeScr
 ```
 src/
 ├── components/         # UI components
-│   ├── Board/          # Board-related components (BoardHeader, BoardContent)
-│   ├── Columns/        # Column components (ColumnContainer, ColumnHeader)
-│   ├── Layout/         # Layout components (Header, Sidebar)
-│   ├── TaskCard/       # Task card components (TaskCard, TaskAssignments, TaskForm)
-│   └── UI/             # Reusable UI components (Toast, NotificationBell, Portal)
+│   ├── Board/          # Board-related components (Board, BoardHeader)
+│   ├── Columns/        # Column components (Column)
+│   ├── Layout/         # Layout components (Header, Sidebar, Layout)
+│   ├── Tasks/          # Task-related components (TaskCard, TaskAssignments, TaskForm)
+│   └── UI/             # Reusable UI components (SearchBar, FloatingSearchButton, Modal, etc.)
 ├── context/            # React context providers
 │   └── ToastContext.tsx # Toast notification context and provider
 ├── store/              # Zustand stores with persist middleware
@@ -156,6 +157,8 @@ src/
 - **Glass Effect**: Applied throughout the UI for a modern look
 - **System Status Visibility**: Toast notifications, loading spinners, and status indicators provide clear feedback
 - **Responsive Design**: Adapts to different screen sizes with a mobile-first approach
+- **Haptic Feedback**: added haptic feedback (vibration) on mobile devices in drag-and-drop.
+
 
 <div align="center">
   <h3>Mobile & Dialog Enhancements</h3>
@@ -166,6 +169,10 @@ src/
     <td width="33%">
       <img src="image-13.png" alt="Task Dialog with Button Components" width="100%"/>
       <p align="center"><em>for better ux we added as buttons not list</em></p>
+    </td>
+        <td width="33%">
+      <img src="image-12.png" alt="Mobile habtic feedback" width="100%"/>
+      <p align="center"><em>for better ux we added habtic or vibrate feedback on mobile</em></p>
     </td>
     <td width="33%">
       <img src="image-11.png" alt="Mobile Floating Action Button" width="100%"/>

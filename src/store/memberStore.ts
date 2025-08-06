@@ -14,7 +14,26 @@ interface MemberState {
 const useMemberStore = create<MemberState>()(
   persist(
     (set) => ({
-      members: [],
+      members: [
+        {
+          id: 'member-1',
+          name: 'Ammar Hussain',
+          role: 'Frontend Developer',
+          avatar: 'https://api.dicebear.com/7.x/initials/svg?seed=Ammar Hussain',
+        },
+        {
+          id: 'member-2',
+          name: 'Ahmed Ali',
+          role: 'UI/UX Designer',
+          avatar: 'https://api.dicebear.com/7.x/initials/svg?seed=Ahmed Ali',
+        },
+        {
+          id: 'member-3',
+          name: 'Sami Mohamed',
+          role: 'Project Manager',
+          avatar: 'https://api.dicebear.com/7.x/initials/svg?seed=Sami Mohamed',
+        },
+      ],
       addMember: (name, role) =>
         set((state) => ({
           members: [

@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Task, TaskStatus } from '../../types/task';
 import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import TaskCard from '../TaskCard/TaskCard';
-import TaskForm from '../TaskCard/TaskForm';
+import TaskCard from '../Tasks/TaskCard';
+import TaskForm from '../Tasks/TaskForm';
 import Modal from '../UI/Modal';
 import { Plus } from 'lucide-react';
 

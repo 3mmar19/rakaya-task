@@ -23,7 +23,6 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, isOverlay = false, onDeleteRe
     listeners,
     setNodeRef,
     transform,
-    transition,
     isDragging
   } = useSortable({
     id: task.id,
@@ -77,15 +76,15 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, isOverlay = false, onDeleteRe
           </div>
 
           {/* Action Buttons */}
-          <div className="flex space-x-1">
+          <div className="flex flex-col sm:flex-row items-center space-y-1 sm:space-y-0 sm:space-x-2">
             {/* Edit Button */}
             <div 
-              className="relative z-20" 
+              className="relative z-20 w-full sm:w-auto" 
               onMouseDown={(e) => e.stopPropagation()} 
               onTouchStart={(e) => e.stopPropagation()}
             >
               <button 
-                className="text-gray-400 hover:text-blue-500 dark:text-gray-500 dark:hover:text-blue-400"
+                className="p-1.5 rounded-full text-gray-400 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 dark:text-gray-500 dark:hover:text-blue-400 transition-all duration-200 transform hover:scale-110 w-full sm:w-auto"
                 title="Edit task"
                 onClick={(e) => {
                   e.stopPropagation(); // Prevent drag from starting
@@ -93,18 +92,18 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, isOverlay = false, onDeleteRe
                   setIsEditFormOpen(true);
                 }}
               >
-                <Edit className="h-4 w-4" />
+                <Edit className="h-4 w-4 md:h-5 md:w-5 mx-auto" />
               </button>
             </div>
             
             {/* Delete Button */}
             <div 
-              className="relative z-20" 
+              className="relative z-20 w-full sm:w-auto" 
               onMouseDown={(e) => e.stopPropagation()} 
               onTouchStart={(e) => e.stopPropagation()}
             >
               <button 
-                className="text-gray-400 hover:text-red-500 dark:text-gray-500 dark:hover:text-red-400"
+                className="p-1.5 rounded-full text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 dark:text-gray-500 dark:hover:text-red-400 transition-all duration-200 transform hover:scale-110 w-full sm:w-auto"
                 title="Delete task"
                 onClick={(e) => {
                   e.stopPropagation(); // Prevent drag from starting
@@ -114,7 +113,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, isOverlay = false, onDeleteRe
                   }
                 }}
               >
-                <Trash className="h-4 w-4" />
+                <Trash className="h-4 w-4 md:h-5 md:w-5 mx-auto" />
               </button>
             </div>
           </div>
