@@ -156,7 +156,6 @@ src/
 ### UI/UX Considerations
 
 - **UX First Approach**: Followed the principle of "Visibility of System Status" to keep users informed about what's happening through appropriate feedback
-- **Accessibility Considerations**: Ensured proper contrast ratios and keyboard navigation support
 - **Mobile-First Design**: Designed components to work well on mobile devices first, then enhanced for larger screens
 - **Glass Effect**: Applied throughout the UI for a modern look
 - **System Status Visibility**: Toast notifications, loading spinners, and status indicators provide clear feedback
